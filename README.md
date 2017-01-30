@@ -1,0 +1,2 @@
+# ExtendsWordPressREST
+skeleton plugin
