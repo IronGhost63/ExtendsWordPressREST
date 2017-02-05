@@ -23,6 +23,11 @@ function register_endpoints(){
 		'methods' => 'GET',
 		'callback' => 'api_get_posts'
 	));
+
+	register_rest_route($route_base, '/posts/(?P<post_id>\d+)', array(
+		'methods' => 'GET',
+		'callback' => 'api_get_post'
+	));
 }
 
 // Function to handle request on new endpoint
@@ -48,6 +53,17 @@ function api_get_posts(WP_REST_Request $request){
 	* Object itself is decendant of WP_HTTP_Response
 	* You can play with it
 	*/
+	$response = new WP_REST_Response($data);
+	return $response;
+}
+
+function api_get_post(WP_REST_Request $request) {
+	$post_id = $request['post_id'];
+
+	$data = array(
+		/* ....... */
+	);
+
 	$response = new WP_REST_Response($data);
 	return $response;
 }
