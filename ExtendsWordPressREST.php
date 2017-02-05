@@ -21,12 +21,14 @@ function register_endpoints(){
 
 	register_rest_route($route_base, '/posts', array(
 		'methods' => 'GET',
-		'callback' => 'api_get_posts'
+		'callback' => 'api_get_posts',
+		'permission_callback' => 'helper_authentication_check'
 	));
 
 	register_rest_route($route_base, '/posts/(?P<post_id>\d+)', array(
 		'methods' => 'GET',
-		'callback' => 'api_get_post'
+		'callback' => 'api_get_post',
+		'permission_callback' => 'helper_authentication_check'
 	));
 }
 
@@ -66,5 +68,16 @@ function api_get_post(WP_REST_Request $request) {
 
 	$response = new WP_REST_Response($data);
 	return $response;
+}
+
+function helper_authentication_check(){
+	// Require this plugin
+	// https://wordpress.org/plugins/jwt-authentication-for-wp-rest-api/
+	$JWT = new Jwt_Auth_Public('WordCamp', '1.0');
+	$validate = $JWT->validate_token(false);
+
+	@wp_set_current_user($validate->data->user->id);
+
+	return $validate;
 }
 ?>
